@@ -1,11 +1,7 @@
 import { body, ValidationChain } from "express-validator";
 
 export const loginValidation: ValidationChain[] = [
-  body("email")
-    .notEmpty()
-    .withMessage("Email is required*")
-    .isEmail()
-    .withMessage("Provide a valid email."),
+  body("username").notEmpty().withMessage("Username is required"),
   body("password")
     .notEmpty()
     .withMessage("Please enter a password with 6 or more characters")

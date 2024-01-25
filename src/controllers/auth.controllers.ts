@@ -1,22 +1,37 @@
 import { generateToken } from "../helpers/jwt.helper";
-import { getUserById, login } from "../services/auth.services";
+import { getUserById, login, register } from "../services/auth.services";
 import { RequestHandler } from "../types";
 
 export const AuthController: {
   login: RequestHandler;
+  register: RequestHandler;
   currentUser: RequestHandler;
 } = {
   login: async (req, res, next) => {
     try {
-      const { email, password } = req.body;
+      const { username, password } = req.body;
 
-      const user = await login({ email, password });
+      const user = await login({ username, password });
       const accessToken = generateToken(user);
 
       res.status(200).json({
         msg: "Login Successful",
         success: true,
         data: { user, accessToken },
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  register: async (req, res, next) => {
+    try {
+      const { password, username, displayName } = req.body;
+
+      await register({ username, password, displayName });
+
+      res.status(200).json({
+        msg: "Register Successful",
+        success: true,
       });
     } catch (error) {
       next(error);

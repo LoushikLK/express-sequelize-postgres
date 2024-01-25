@@ -8,6 +8,6 @@ export type RequestHandler = (
 
 export interface IAuthUser {
   id: string;
-  email: string;
-  name: string;
+  username: string;
+  displayName: string;
 }

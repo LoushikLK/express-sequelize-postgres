@@ -1,13 +1,17 @@
+import dotenv from "dotenv";
 import express from "express";
 import { createServer, Server } from "http";
+import { connectToDb } from "./database/connector";
 import routerHandler from "./helpers/router.helper";
 import bottomLevelMiddleware from "./middlewares/bottom.middleware";
 import topLevelMiddleware from "./middlewares/top.middleware";
-require("dotenv").config();
+
+dotenv.config();
 
 const app: express.Application = express();
 const PORT = process.env.APP_PORT || 8000;
 const server: Server = createServer(app);
+connectToDb(); // connect to database
 
 topLevelMiddleware(app); //setup middleware
 routerHandler(app); //this automatically creates routes in the routes folder i.e. if a file is auth.route.ts then its actual file will be http://locxalhost:8000/api/v1/auth

@@ -1,29 +1,26 @@
-import bcrypt from "bcrypt";
-import { NotAcceptable, Unauthorized } from "http-errors";
-import { prisma } from "../config";
+import { Unauthorized } from "http-errors";
+import User from "../schemas/user.model";
+import HashService from "./hash.services";
 
 export async function login({
-  email,
+  username,
   password,
 }: {
-  email: string;
+  username: string;
   password: string;
 }) {
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
+    const user = await User.findOne({ where: { username }, raw: true });
 
     if (!user)
       throw new Unauthorized(
         "No account is associated with you credentials please register first!"
       );
-    if (user.isBlocked)
-      throw new NotAcceptable("Account is blocked. Could not logged in");
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = await new HashService().comparePassword(
+      password,
+      user.password
+    );
     if (!isPasswordMatch)
       throw new Unauthorized("Incorrect credentials, please try again!");
 
@@ -32,24 +29,45 @@ export async function login({
     throw error;
   }
 }
+export async function register({
+  username,
+  password,
+  displayName,
+}: {
+  username: string;
+  password: string;
+  displayName: string;
+}) {
+  try {
+    const user = await User.findOne({ where: { username } });
+
+    if (user) throw new Unauthorized("Username already exist please login!");
+
+    const hashPassword = await new HashService().hashPassword(password);
+
+    await User.create(
+      {
+        username,
+        password: hashPassword,
+        displayName,
+      },
+      {
+        returning: false,
+      }
+    );
+  } catch (error) {
+    console.log({ error });
+    throw error;
+  }
+}
 
 export async function getUserById(id: string) {
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        name: true,
-        email: true,
-        id: true,
+    const user = await User.findByPk(id, {
+      attributes: {
+        exclude: ["password"],
       },
     });
-
-    if (!user)
-      throw new Unauthorized(
-        "No account is associated with you credentials please register first!"
-      );
 
     return user;
   } catch (error) {

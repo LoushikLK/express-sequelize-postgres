@@ -21,11 +21,11 @@ export const isAuthenticated = async (
       throw new Unauthorized("User is not authorized.");
 
     // extract token from header
-    const decoded = await verifyToken(req.headers.authorization);
+    const decoded: any = verifyToken(req.headers.authorization);
     req.currentUser = {
       id: decoded?.id,
-      email: decoded?.email,
-      name: decoded?.name,
+      username: decoded?.username,
+      displayName: decoded?.displayName,
     };
     next();
   } catch (error) {

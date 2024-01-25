@@ -1,7 +1,7 @@
 import { InternalServerError } from "http-errors";
 import jwt, { SignOptions } from "jsonwebtoken";
 
-export const generateToken = async (
+export const generateToken = (
   payload: string | object,
   options?: SignOptions
 ) => {
@@ -13,7 +13,7 @@ export const generateToken = async (
     expiresIn: options?.expiresIn || "1d",
   });
 };
-export const verifyToken = async (token: string): Promise<any> => {
+export const verifyToken = (token: string) => {
   const jwtSecret = process.env.JWT_SECRET as string;
 
   if (!jwtSecret) throw new InternalServerError("JWT secret is not found.");

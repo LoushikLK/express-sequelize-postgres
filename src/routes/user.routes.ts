@@ -1,24 +1,31 @@
 import express from "express";
-import { AuthController } from "../controllers/auth.controllers";
+import { UserControllers } from "../controllers/user.controllers";
 import { isAuthenticated } from "../middlewares/authenticated.middleware";
 import { formatValidationErrors } from "../middlewares/formValidator.middleware";
 import { loginValidation } from "../validations/auth.validations";
 
 const router = express.Router();
 
-router.get("/self", isAuthenticated, AuthController.currentUser);
-
-router.post(
-  "/login",
+router.put(
+  "/:id",
   loginValidation,
   formatValidationErrors,
-  AuthController.login
+  isAuthenticated,
+  UserControllers.updateSelfData
 );
-router.post(
-  "/register",
+router.get(
+  "/:username",
   loginValidation,
   formatValidationErrors,
-  AuthController.register
+  isAuthenticated,
+  UserControllers.deleteSelfData
+);
+router.delete(
+  "/:id",
+  loginValidation,
+  formatValidationErrors,
+  isAuthenticated,
+  UserControllers.deleteSelfData
 );
 
 export default router;
