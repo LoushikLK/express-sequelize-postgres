@@ -24,6 +24,13 @@ Note.init(
       onUpdate: "NO ACTION",
       onDelete: "CASCADE",
     },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    content: {
+      type: DataTypes.TEXT,
+    },
   },
   {
     // Other model options go here
