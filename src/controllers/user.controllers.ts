@@ -16,7 +16,7 @@ export const UserControllers: {
 
       const userId = req?.params?.id;
 
-      const user = await updateSelf({
+      await updateSelf({
         username,
         password,
         displayName,

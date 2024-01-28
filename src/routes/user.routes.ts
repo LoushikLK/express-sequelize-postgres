@@ -2,27 +2,31 @@ import express from "express";
 import { UserControllers } from "../controllers/user.controllers";
 import { isAuthenticated } from "../middlewares/authenticated.middleware";
 import { formatValidationErrors } from "../middlewares/formValidator.middleware";
-import { loginValidation } from "../validations/auth.validations";
+import {
+  deleteSelfValidations,
+  getUsernameValidation,
+  updateValidations,
+} from "../validations/user.validations";
 
 const router = express.Router();
 
 router.put(
   "/:id",
-  loginValidation,
+  updateValidations,
   formatValidationErrors,
   isAuthenticated,
   UserControllers.updateSelfData
 );
 router.get(
   "/:username",
-  loginValidation,
+  getUsernameValidation,
   formatValidationErrors,
   isAuthenticated,
-  UserControllers.deleteSelfData
+  UserControllers.checkUsername
 );
 router.delete(
   "/:id",
-  loginValidation,
+  deleteSelfValidations,
   formatValidationErrors,
   isAuthenticated,
   UserControllers.deleteSelfData
