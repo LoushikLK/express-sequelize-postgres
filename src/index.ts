@@ -17,6 +17,7 @@ topLevelMiddleware(app); //setup middleware
 routerHandler(app); //this automatically creates routes in the routes folder i.e. if a file is auth.route.ts then its actual file will be http://locxalhost:8000/api/v1/auth
 bottomLevelMiddleware(app); //setup bottom middleware handles (e.g. error ,not found route)
 
-server.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+//server.listen(PORT, () => {
+  //console.log(`Server started on port ${PORT}`);
+//});
+export default app
