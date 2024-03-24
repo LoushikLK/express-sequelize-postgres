@@ -3,6 +3,7 @@ import { Sequelize } from "sequelize";
 require("dotenv").config();
 const sequelizeInstance = new Sequelize(process.env.DATABASE_URL as string, {
   logging: console.log,
+  dialectModule: require("pg"),
   dialect: "postgres",
   dialectOptions: {
     ssl: {
