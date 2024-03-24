@@ -11,8 +11,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sequelizeInstance = exports.connectToDb = void 0;
 const sequelize_1 = require("sequelize");
+require("dotenv").config();
 const sequelizeInstance = new sequelize_1.Sequelize(process.env.DATABASE_URL, {
     logging: console.log,
+    dialect: "postgres",
+    dialectOptions: {
+        ssl: {
+            require: true,
+            // For self-signed certificates, set to true
+            rejectUnauthorized: false,
+            // Other SSL options as needed
+        },
+    },
 });
 exports.sequelizeInstance = sequelizeInstance;
 const connectToDb = () => __awaiter(void 0, void 0, void 0, function* () {
