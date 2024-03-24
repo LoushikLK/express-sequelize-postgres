@@ -1,11 +1,8 @@
 import { Sequelize } from "sequelize";
 
-const sequelizeInstance = new Sequelize(
-  "postgres://postgres:1qaz2wsx@127.0.0.1:5432/test-db",
-  {
-    logging: console.log,
-  }
-);
+const sequelizeInstance = new Sequelize(process.env.DATABASE_URL as string, {
+  logging: console.log,
+});
 
 const connectToDb = async () => {
   try {
