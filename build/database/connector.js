@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sequelizeInstance = exports.connectToDb = void 0;
 const sequelize_1 = require("sequelize");
-const sequelizeInstance = new sequelize_1.Sequelize("postgres://postgres:1qaz2wsx@127.0.0.1:5432/test-db", {
+const sequelizeInstance = new sequelize_1.Sequelize(process.env.DATABASE_URL, {
     logging: console.log,
 });
 exports.sequelizeInstance = sequelizeInstance;
